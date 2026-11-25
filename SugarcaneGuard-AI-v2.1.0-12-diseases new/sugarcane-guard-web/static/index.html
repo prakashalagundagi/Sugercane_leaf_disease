@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SugarcaneGuard AI — Sugarcane Leaf Disease Detection</title>
+<meta name="description" content="Upload a sugarcane leaf photo and get an instant AI-powered disease diagnosis with treatment guidance.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css?v=2.1.0">
+</head>
+<body>
+
+<div class="utilbar">
+  <div class="wrap">
+    <span>🌾 AI-powered crop health, built for sugarcane farmers</span>
+    <span class="mode-badge" id="modeBadge">checking model…</span>
+  </div>
+</div>
+
+<nav class="main">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark">🌾</span> SugarcaneGuard&nbsp;AI</a>
+    <div class="nav-links">
+      <a href="#scanner">Scanner</a>
+      <a href="#guide">Disease Guide</a>
+      <a href="#technology">Technology</a>
+      <a href="#faq">FAQ</a>
+      <a href="/train" style="color:var(--mid)">Train AI</a>
+      <a href="/download" style="color:var(--mid)">Download</a>
+      <a class="btn small primary" href="#scanner" style="color:#fff">Scan a leaf</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="kicker">MobileNetV2 · Deep Learning</span>
+    <h1>Detect sugarcane leaf disease <em>before</em> it costs you the harvest.</h1>
+    <p class="lead">Snap a photo of a leaf. SugarcaneGuard AI identifies the disease in seconds and gives you field-ready treatment guidance — trained on thousands of real sugarcane leaf images.</p>
+    <div class="hero-cta">
+      <a class="btn" href="#scanner">🔍 Start free scan</a>
+      <a class="btn ghost" href="#guide">Browse disease guide</a>
+      <a class="btn ghost" href="/download">⬇️ Download</a>
+    </div>
+    <div class="hero-stats">
+      <div><b>12</b><span>leaf conditions detected</span></div>
+      <div><b>~2,900</b><span>training images</span></div>
+      <div><b>&lt;5s</b><span>typical analysis time</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= VALUE PROPS ================= -->
+<section class="block" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Why SugarcaneGuard</span>
+      <h2>Early detection saves crops — and money</h2>
+      <p>Diseases like smut and sett rot spread fast through a field. Catching them at the leaf stage means cheaper, targeted action instead of losing whole rows.</p>
+    </div>
+    <div class="props">
+      <div class="prop"><div class="ic">⚡</div><h3>Instant diagnosis</h3><p>Upload a photo and get the predicted disease with a confidence score in seconds — no lab, no waiting.</p></div>
+      <div class="prop"><div class="ic">🛡️</div><h3>Actionable guidance</h3><p>Every result comes with symptoms to verify and treatment steps written for real field conditions.</p></div>
+      <div class="prop"><div class="ic">🧠</div><h3>Trained on real data</h3><p>A MobileNetV2 transfer-learning model fine-tuned on thousands of labelled sugarcane leaf images across 12 classes.</p></div>
+      <div class="prop"><div class="ic">🖨️</div><h3>Printable reports</h3><p>Generate a clean diagnosis report to share with your agronomist or keep for farm records.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCANNER ================= -->
+<section class="block" id="scanner">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Leaf scanner</span>
+      <h2>Scan your leaf</h2>
+      <p>Use a clear, well-lit photo with the leaf filling most of the frame. Daylight works best — avoid heavy shadows.</p>
+    </div>
+    <div class="panel">
+      <div id="trainCta" style="display:none;background:#f0f9e4;border:1.5px solid #a3e635;border-radius:12px;padding:14px 20px;margin-bottom:20px;font-size:.93rem;color:#3f6212">
+        🧠 <b>Want real results instead of demo predictions?</b> Train the AI on your actual leaf photos in the <a href="/train" style="color:var(--lime-d);font-weight:700">Train AI</a> page — with live progress and timing.
+      </div>
+      <div class="drop" id="dropZone">
+        <div class="big">📸</div>
+        <h3>Drop your leaf photo here</h3>
+        <p>or <b style="color:var(--pine)">click to browse</b> your files · JPG, PNG, BMP up to 10&nbsp;MB</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*">
+
+      <div class="stage" id="stage">
+        <div>
+          <img id="previewImg" alt="Leaf preview">
+          <div class="scan-actions">
+            <button class="btn primary" id="analyzeBtn">⚡ Analyze leaf</button>
+            <button class="btn outline" id="clearBtn">Clear</button>
+          </div>
+        </div>
+        <div>
+          <h3 style="color:var(--pine);font-family:var(--font-d);margin-bottom:8px">Photo tips for accurate results</h3>
+          <ul style="color:var(--muted);font-size:.93rem;padding-left:20px">
+            <li>Hold the leaf flat and fill the frame with it</li>
+            <li>Shoot in natural daylight, avoid flash glare</li>
+            <li>One leaf per photo — don't mix multiple plants</li>
+            <li>Keep the leaf in focus; blurry photos confuse the model</li>
+          </ul>
+        </div>
+      </div>
+      <div class="spinner" id="spinner"></div>
+
+      <!-- ===== result dashboard ===== -->
+      <div id="result">
+        <div class="res-head">
+          <div class="ring">
+            <svg width="132" height="132">
+              <circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="12"/>
+              <circle id="ringArc" cx="66" cy="66" r="56" fill="none" stroke="#a3e635" stroke-width="12"
+                      stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+            </svg>
+            <div class="pct" id="rPct">0%</div>
+          </div>
+          <div>
+            <div class="pill-row">
+              <span class="tag diag">Diagnosis</span>
+              <span class="sev" id="rSev"></span>
+            </div>
+            <h3 id="rClass">—</h3>
+            <div class="sci" id="rSci"></div>
+            <div class="pill-row" style="margin-top:6px">
+              <span class="tag" id="rMode" style="background:rgba(255,255,255,.14);color:#fff"></span>
+            </div>
+          </div>
+          <div class="res-actions">
+            <button class="btn small" id="printBtn">🖨️ Print report</button>
+            <button class="btn small ghost" id="newScanBtn">↺ New scan</button>
+          </div>
+        </div>
+        <div style="text-align:right;color:var(--muted);font-size:.82rem;margin-top:10px" id="inferTime"></div>
+        <div class="demo-note" id="demoNote" style="display:none"></div>
+        <div class="tabs">
+          <div class="tabbar">
+            <button class="active" data-tab="t-pred">Top predictions</button>
+            <button data-tab="t-sym">Symptoms to verify</button>
+            <button data-tab="t-treat">Treatment &amp; prevention</button>
+          </div>
+          <div class="tabpane active" id="t-pred"><div id="bars"></div></div>
+          <div class="tabpane" id="t-sym"><h4>🔎 Check these signs on your plant</h4><ul id="rSymptoms"></ul></div>
+          <div class="tabpane" id="t-treat"><h4>🛡️ Recommended actions</h4><ul id="rManage"></ul></div>
+        </div>
+      </div>
+
+      <h3 class="samples-label">No photo handy? Try a sample</h3>
+      <p style="text-align:center;color:var(--muted);font-size:.9rem">Tap any sample to load it into the scanner.</p>
+      <div class="samples" id="samples"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DISEASE GUIDE ================= -->
+<section class="block" id="guide" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Reference</span>
+      <h2>Disease guide</h2>
+      <p>All seven conditions the model recognises — search, filter by severity, and expand any card for symptoms and management.</p>
+    </div>
+    <div class="guide-tools">
+      <div class="search"><input id="guideSearch" type="text" placeholder="Search diseases, symptoms…"></div>
+      <div class="chips" id="sevChips">
+        <button class="chip active" data-sev="all">All</button>
+        <button class="chip" data-sev="high">High severity</button>
+        <button class="chip" data-sev="moderate">Moderate</button>
+        <button class="chip" data-sev="low">Low</button>
+        <button class="chip" data-sev="none">Healthy</button>
+      </div>
+    </div>
+    <div class="lib-grid" id="libGrid"></div>
+    <div class="empty-msg" id="emptyMsg">No diseases match your search.</div>
+  </div>
+</section>
+
+<!-- ================= TECHNOLOGY ================= -->
+<section class="block" id="technology">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Under the hood</span>
+      <h2>Built on proven deep learning</h2>
+      <p>The same pipeline from the SugarcaneGuard AI research notebook — now served as a web API.</p>
+    </div>
+    <div class="pipeline">
+      <div class="pstep"><div class="pn">STEP 1</div><h4>📷 Leaf photo</h4><p>Resized to 224×224, normalised with MobileNetV2 preprocessing</p></div>
+      <div class="pstep"><div class="pn">STEP 2</div><h4>🧠 MobileNetV2</h4><p>ImageNet-pretrained base (frozen) extracts visual features</p></div>
+      <div class="pstep"><div class="pn">STEP 3</div><h4>🔗 Classifier head</h4><p>Global average pooling + dropout + dense layer</p></div>
+      <div class="pstep"><div class="pn">STEP 4</div><h4>🎯 Diagnosis</h4><p>12-way softmax scores every condition</p></div>
+    </div>
+    <div class="spec">
+      <div class="card">
+        <h4>Model specification</h4>
+        <table>
+          <tr><td>Architecture</td><td>MobileNetV2 (transfer learning)</td></tr>
+          <tr><td>Input</td><td>224 × 224 × 3 RGB</td></tr>
+          <tr><td>Classes</td><td>12 (10 diseases + healthy + dried)</td></tr>
+          <tr><td>Training data</td><td>~2,900 images · 70/15/15 split</td></tr>
+          <tr><td>Class imbalance</td><td>Handled with class weights</td></tr>
+          <tr><td>Framework</td><td>TensorFlow / Keras</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h4>Notebook → website</h4>
+        <table>
+          <tr><td>Training</td><td><code>SugarcaneGuard_AI_Jupyter_Updated_Path.ipynb</code></td></tr>
+          <tr><td>Final model</td><td><code>models/sugarcane_model.keras</code></td></tr>
+          <tr><td>Best checkpoint</td><td><code>models/best_sugarcane_model.keras</code></td></tr>
+          <tr><td>Class labels</td><td><code>models/class_names.json</code></td></tr>
+          <tr><td>Web API</td><td><code>POST /api/predict</code> (multipart image)</td></tr>
+          <tr><td>Preprocessing</td><td><code>mobilenet_v2.preprocess_input</code></td></tr>
+        </table>
+      </div>
+    </div>
+    <figure class="tech-img">
+      <img src="/static/img/farmer-inspect.jpg" alt="Farmer photographing a sugarcane leaf with a smartphone">
+      <figcaption><b>Designed for the field.</b> The scanner works from any phone or computer browser — take the photo in the field, get the diagnosis on the spot.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="block" id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">FAQ</span>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq" id="faqList">
+      <div class="faq-item"><button class="faq-q">How accurate is the model?</button><div class="faq-a"><p>Accuracy is measured on a held-out test set in the training notebook — run the evaluation cells to see your model's exact test accuracy. In the field, clear daylight photos of a single leaf give the most reliable results. Treat the AI as a scouting assistant: confirm severe or high-stakes cases with a local agronomist.</p></div></div>
+      <div class="faq-item"><button class="faq-q">What does "demo mode" mean?</button><div class="faq-a"><p>Demo mode means no trained model file was found in the <code>models/</code> folder, so the site returns a clearly-labelled simulated prediction. Everything else — the scanner, results dashboard, disease guide — works normally. Copy your trained <code>sugarcane_model.keras</code> and <code>class_names.json</code> into <code>models/</code> and restart to switch to the live model.</p></div></div>
+      <div class="faq-item"><button class="faq-q">How do I get the real AI predictions?</button><div class="faq-a"><p>Run every cell of <code>SugarcaneGuard_AI_Jupyter_Updated_Path.ipynb</code> through cell 11 ("Save final model"). Then copy <code>models/sugarcane_model.keras</code> and <code>models/class_names.json</code> from the notebook folder into this website's <code>models/</code> folder, install TensorFlow (<code>pip install tensorflow</code>), and restart the server. The header badge will change to "live model".</p></div></div>
+      <div class="faq-item"><button class="faq-q">What makes a good leaf photo?</button><div class="faq-a"><p>Fill the frame with one leaf, shoot in natural daylight without flash, keep it in focus, and photograph the side showing the symptoms. Avoid photographing multiple plants or leaves at once.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Are my photos stored or uploaded anywhere?</button><div class="faq-a"><p>Photos are sent to the server only for the duration of the analysis and are not saved. When you run the site on your own computer, images never leave your machine at all.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Can it detect diseases not in the list?</button><div class="faq-a"><p>No — the model only knows the 12 conditions it was trained on (Mosaic, Smut, Yellow Leaf, Sett Rot, Pokkah Boeng, Banded Chlorosis, Brown Spot, Brown Rust, Grassy Shoot, Viral Disease, Healthy Leaves, Dried Leaves). A very high-confidence "healthy" result on a clearly sick plant, or odd results on non-leaf photos, means the image is outside what the model learned.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<div class="disclaimer">⚠️ SugarcaneGuard AI supports field scouting and is not a substitute for professional agronomic advice. Always confirm serious outbreaks with a qualified agronomist or extension officer.</div>
+<footer>
+  <div class="wrap">
+    <div>
+      <h4>🌾 SugarcaneGuard AI</h4>
+      <p>Deep-learning leaf disease detection for sugarcane — from research notebook to field-ready web tool.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#scanner">Leaf scanner</a></li>
+        <li><a href="#guide">Disease guide</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Model</h4>
+      <ul>
+        <li>MobileNetV2 · TensorFlow/Keras</li>
+        <li>12 classes · thousands of images</li>
+        <li id="footMode">Mode: checking…</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">SugarcaneGuard AI · v2.1.0 · Built with TensorFlow · For sugarcane farmers</div>
+</footer>
+
+<!-- printable diagnosis report -->
+<div id="print-report" aria-hidden="true"></div>
+
+<script src="/static/js/app.js?v=2.1.0"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download — SugarcaneGuard AI</title>
+<meta name="description" content="Download the complete SugarcaneGuard AI website package.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css?v=2.1.0">
+<style>
+  .dl-hero{background:linear-gradient(120deg,var(--pine),#0c3520);color:#fff;padding:70px 0 60px;text-align:center}
+  .dl-hero h1{font-size:clamp(1.9rem,4.5vw,2.8rem)}
+  .dl-hero p{color:#cfe8d6;max-width:600px;margin:14px auto 0}
+  .dl-card{background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:44px 40px;margin:-40px auto 0;max-width:760px;position:relative;text-align:center}
+  .dl-card .file{font-family:var(--font-d);font-weight:700;color:var(--pine);font-size:1.15rem;margin:6px 0}
+  .dl-meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 26px}
+  .dl-meta span{background:#eef4e9;color:var(--pine);font-size:.83rem;font-weight:600;padding:7px 16px;border-radius:999px}
+  .dl-big{font-size:1.15rem;padding:17px 46px}
+  .includes{text-align:left;max-width:760px;margin:44px auto 0;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:34px 38px}
+  .includes h3{font-family:var(--font-d);color:var(--pine);margin-bottom:14px}
+  .includes ul{list-style:none;padding:0}
+  .includes li{padding:9px 0;border-bottom:1px solid var(--line);font-size:.95rem;color:#33463a}
+  .includes li:last-child{border-bottom:none}
+  .includes li b{color:var(--pine)}
+  .steps-dl{max-width:760px;margin:26px auto 0;display:grid;gap:12px}
+  .steps-dl .s{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:18px 22px;display:flex;gap:16px;align-items:flex-start}
+  .steps-dl .n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--pine);color:var(--lime);font-family:var(--font-d);font-weight:800;display:flex;align-items:center;justify-content:center}
+  .steps-dl code{background:#e9f0e4;padding:3px 10px;border-radius:7px;font-size:.86rem;color:var(--pine)}
+  .dl-foot{text-align:center;margin:40px 0 70px;color:var(--muted)}
+  .dl-foot a{color:var(--mid);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="utilbar">
+  <div class="wrap">
+    <span>🌾 AI-powered crop health, built for sugarcane farmers</span>
+    <span class="mode-badge" id="modeBadge">checking model…</span>
+  </div>
+</div>
+
+<nav class="main">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark">🌾</span> SugarcaneGuard&nbsp;AI</a>
+    <div class="nav-links">
+      <a href="/#scanner">Scanner</a>
+      <a href="/#guide">Disease Guide</a>
+      <a href="/#technology">Technology</a>
+      <a href="/train" style="color:var(--mid)">Train AI</a>
+      <a href="/download" style="color:var(--mid)">Download</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dl-hero">
+  <div class="wrap">
+    <h1>⬇️ Download SugarcaneGuard AI</h1>
+    <p>Get the complete website package — backend, frontend, disease data, sample images and setup guide — in one zip file. Free to use.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="dl-card">
+    <div style="font-size:3rem">📦</div>
+    <div class="file">sugarcane-guard-web.zip</div>
+    <div class="dl-meta">
+      <span id="dlSize">2.7 MB</span>
+      <span>Version 2.1.0</span>
+      <span>Windows · macOS · Linux</span>
+      <span>Python 3.9+</span>
+    </div>
+    <a class="btn dl-big" href="/static/downloads/sugarcane-guard-web.zip" download>⬇️ Download now</a>
+    <p style="margin-top:14px;font-size:.86rem;color:var(--muted)">By downloading you agree to use the tool as a scouting aid alongside professional agronomic advice.</p>
+  </div>
+
+  <div class="includes">
+    <h3>📋 What's inside the package</h3>
+    <ul>
+      <li><b>app.py</b> — FastAPI backend with the prediction API (<code>/api/predict</code>, <code>/api/health</code>, <code>/api/classes</code>)</li>
+      <li><b>Website</b> — leaf scanner, result dashboard, printable reports, disease guide, technology &amp; FAQ pages</li>
+      <li><b>disease_info.json</b> — symptoms and treatment advice for all 12 leaf conditions</li>
+      <li><b>Sample photos</b> — 3 AI-generated leaf images to try the scanner instantly</li>
+      <li><b>models/ folder</b> — ready for your trained <code>sugarcane_model.keras</code> + <code>class_names.json</code></li>
+      <li><b>README.md</b> — setup guide, real-model instructions and API docs</li>
+    </ul>
+  </div>
+
+  <div class="steps-dl">
+    <div class="s"><div class="n">1</div><div><b>Install Python 3.9+</b> from python.org (tick "Add python to PATH" on Windows).</div></div>
+    <div class="s"><div class="n">2</div><div><b>Extract the zip</b> and open a terminal inside the <code>sugarcane-guard-web</code> folder.</div></div>
+    <div class="s"><div class="n">3</div><div>Run <code>pip install -r requirements.txt</code> to install the dependencies.</div></div>
+    <div class="s"><div class="n">4</div><div>Run <code>python app.py</code> and open <code>http://127.0.0.1:8000</code> in your browser.</div></div>
+  </div>
+
+  <div class="dl-foot">
+    Want the live AI instead of demo mode? <a href="/#faq">See the FAQ</a> for how to connect your trained model.<br><br>
+    <a href="/">← Back to SugarcaneGuard AI home</a>
+  </div>
+</div>
+
+<div class="disclaimer">⚠️ SugarcaneGuard AI supports field scouting and is not a substitute for professional agronomic advice.</div>
+<footer>
+  <div class="foot-bottom">SugarcaneGuard AI · v2.1.0 · Built with TensorFlow · For sugarcane farmers</div>
+</footer>
+
+<script>
+fetch("/api/health").then(r=>r.json()).then(h=>{
+  const b=document.getElementById("modeBadge");
+  if(h.mode==="real"){b.textContent="● live model";b.classList.add("real");}
+  else{b.textContent="● demo mode";}
+}).catch(()=>{});
+</script>
+</body>
+</html>

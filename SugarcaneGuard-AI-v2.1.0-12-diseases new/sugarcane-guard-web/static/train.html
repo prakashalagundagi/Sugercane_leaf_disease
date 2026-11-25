@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Train AI — SugarcaneGuard AI</title>
+<meta name="description" content="Train the SugarcaneGuard AI model on your real sugarcane leaf dataset with live progress and timing.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/styles.css?v=2.1.0">
+<style>
+  .tr-hero{background:linear-gradient(120deg,var(--pine),#0c3520);color:#fff;padding:64px 0 56px;text-align:center}
+  .tr-hero h1{font-size:clamp(1.9rem,4.5vw,2.7rem)}
+  .tr-hero p{color:#cfe8d6;max-width:640px;margin:14px auto 0}
+  .tr-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
+  @media(max-width:820px){.tr-grid{grid-template-columns:1fr}}
+  .opt-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;border:2.5px solid transparent;cursor:pointer;transition:.2s}
+  .opt-card.sel{border-color:var(--lime-d)}
+  .opt-card h3{font-family:var(--font-d);color:var(--pine);margin-bottom:6px}
+  .opt-card p{font-size:.9rem;color:var(--muted);margin-bottom:14px}
+  .opt-card input[type=text],.opt-card input[type=number]{width:100%;padding:12px 16px;border:2px solid var(--line);border-radius:12px;font-size:.95rem;font-family:var(--font-b);outline:none}
+  .opt-card input:focus{border-color:var(--mid)}
+  .opt-card input[type=file]{font-size:.9rem}
+  .start-row{text-align:center;margin:30px 0 10px}
+  .hint{font-size:.85rem;color:var(--muted);text-align:center;max-width:640px;margin:0 auto}
+  .hint code{background:#e9f0e4;padding:2px 8px;border-radius:6px;color:var(--pine)}
+  #dash{display:none;margin-top:36px}
+  #dash.show{display:block}
+  .status-line{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+  .state-pill{font-family:var(--font-d);font-weight:700;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;padding:8px 20px;border-radius:999px;background:#eef4e9;color:var(--pine)}
+  .state-pill.running{background:#fef3c7;color:#b45309}
+  .state-pill.done{background:#dcfce7;color:#15803d}
+  .state-pill.error{background:#fee2e2;color:#b91c1c}
+  .prog-wrap{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px}
+  .prog-top{display:flex;justify-content:space-between;font-weight:700;color:var(--pine);font-family:var(--font-d);margin-bottom:10px}
+  .prog{height:18px;background:#edf3e9;border-radius:999px;overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mid),var(--lime));border-radius:999px;transition:width .6s ease}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:18px}
+  .stat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .stat b{font-family:var(--font-d);font-size:1.35rem;color:var(--pine);display:block}
+  .stat span{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .console{background:#0d2117;color:#b8f0c8;border-radius:var(--radius);padding:22px 24px;margin-top:18px;font-family:ui-monospace,Consolas,monospace;font-size:.83rem;line-height:1.7;height:300px;overflow-y:auto;box-shadow:var(--shadow)}
+  .console .err{color:#ff9d9d}
+  .banner{border-radius:var(--radius);padding:22px 28px;margin-top:18px;font-size:.95rem;display:none}
+  .banner.show{display:block}
+  .banner.ok{background:#dcfce7;border:1.5px solid #86efac;color:#14532d}
+  .banner.bad{background:#fee2e2;border:1.5px solid #fca5a5;color:#7f1d1d}
+  .banner h3{font-family:var(--font-d);margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="utilbar">
+  <div class="wrap">
+    <span>🌾 AI-powered crop health, built for sugarcane farmers</span>
+    <span class="mode-badge" id="modeBadge">checking model…</span>
+  </div>
+</div>
+
+<nav class="main">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark">🌾</span> SugarcaneGuard&nbsp;AI</a>
+    <div class="nav-links">
+      <a href="/#scanner">Scanner</a>
+      <a href="/#guide">Disease Guide</a>
+      <a href="/train" style="color:var(--mid)">Train AI</a>
+      <a href="/download">Download</a>
+    </div>
+  </div>
+</nav>
+
+<div class="tr-hero">
+  <div class="wrap">
+    <h1>🧠 Train the AI on your real dataset</h1>
+    <p>No more demo predictions. Point the trainer at your sugarcane leaf photos, watch every epoch live with timing, and the moment training finishes the website switches to your real model automatically.</p>
+  </div>
+</div>
+
+<div class="wrap" style="padding-bottom:70px">
+  <div id="setup">
+    <div class="sec-head" style="margin-top:40px">
+      <span class="kicker">Step 1 — your data</span>
+      <h2 style="font-size:1.7rem">Where are your leaf photos?</h2>
+      <p>Choose the fastest option for you. Your dataset stays on your machine.</p>
+    </div>
+    <div class="tr-grid">
+      <div class="opt-card sel" id="optFolder">
+        <h3>📁 Dataset folder <span style="font-size:.75rem;background:#dcfce7;color:#15803d;padding:4px 12px;border-radius:999px;vertical-align:middle">FASTEST</span></h3>
+        <p>The folder is already on this computer — no upload needed. Paste its full path:</p>
+        <input type="text" id="folderPath" placeholder="D:\OneDrive\Desktop\sugarcane leaf decise detection Final\archive">
+        <p style="margin-top:10px;font-size:.82rem">It must contain: <code>Diseases/Diseases/…</code>, <code>Healthy Leaves/Healthy Leaves/</code>, <code>Dried Leaves/Dried Leaves/</code></p>
+      </div>
+      <div class="opt-card" id="optZip">
+        <h3>🗜️ Upload a zip</h3>
+        <p>Zip your dataset's <code>archive</code> folder and upload it here. Good if the folder isn't on this machine.</p>
+        <input type="file" id="zipFile" accept=".zip">
+        <p style="margin-top:10px;font-size:.82rem" id="zipName"></p>
+      </div>
+    </div>
+    <div class="sec-head" style="margin-top:34px">
+      <span class="kicker">Step 2 — training length</span>
+      <h2 style="font-size:1.7rem">How long should it train?</h2>
+      <p>Same as your notebook. Early stopping ends it early if the model stops improving.</p>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <label style="font-weight:600;color:var(--pine)">Epochs: <input type="number" id="epochs" value="20" min="1" max="100" style="width:90px;padding:10px 14px;border:2px solid var(--line);border-radius:12px;font-size:1rem;text-align:center"></label>
+    </div>
+    <div class="start-row">
+      <button class="btn primary" id="startBtn" style="font-size:1.1rem;padding:16px 52px">🚀 Start training</button>
+    </div>
+    <p class="hint">Requires <code>pip install tensorflow scikit-learn</code> first. On a CPU-only laptop, 20 epochs over ~2,900 images can take a while — the page shows live timing and ETA so you always know where it stands. You can close this tab; training keeps running.</p>
+  </div>
+
+  <div id="dash">
+    <div class="status-line">
+      <span class="state-pill" id="statePill">PREPARING</span>
+      <span style="color:var(--muted);font-size:.9rem" id="jobLine"></span>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-top"><span id="epochLabel">Epoch 0 / 0</span><span id="pctLabel">0%</span></div>
+      <div class="prog"><i id="progBar"></i></div>
+      <div class="stat-grid">
+        <div class="stat"><b id="sElapsed">0s</b><span>Elapsed</span></div>
+        <div class="stat"><b id="sEpochTime">—</b><span>Avg / epoch</span></div>
+        <div class="stat"><b id="sEta">—</b><span>ETA</span></div>
+        <div class="stat"><b id="sTrainAcc">—</b><span>Train acc</span></div>
+        <div class="stat"><b id="sValAcc">—</b><span>Val acc</span></div>
+        <div class="stat"><b id="sImages">—</b><span>Images</span></div>
+      </div>
+    </div>
+    <div class="console" id="console"></div>
+    <div class="banner ok" id="doneBanner">
+      <h3>✅ Training complete — your real model is now live</h3>
+      <div id="doneText"></div>
+      <div style="margin-top:14px"><a class="btn" href="/#scanner">🔍 Scan a leaf with the real AI</a></div>
+    </div>
+    <div class="banner bad" id="errBanner">
+      <h3>❌ Training failed</h3>
+      <div id="errText"></div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">⚠️ Training runs on this machine and can take a long time on CPU. Keep the server running until it finishes.</div>
+<footer><div class="foot-bottom">SugarcaneGuard AI · v2.1.0 · Built with TensorFlow · For sugarcane farmers</div></footer>
+
+<script>
+let mode = "folder", pollTimer = null, lastLogCount = 0;
+
+const optFolder = document.getElementById("optFolder"), optZip = document.getElementById("optZip");
+optFolder.onclick = () => { mode = "folder"; optFolder.classList.add("sel"); optZip.classList.remove("sel"); };
+optZip.onclick = () => { mode = "zip"; optZip.classList.add("sel"); optFolder.classList.remove("sel"); };
+document.getElementById("zipFile").onchange = e => {
+  const f = e.target.files[0];
+  document.getElementById("zipName").textContent = f ? ("Selected: " + f.name + " (" + (f.size/1048576).toFixed(1) + " MB)") : "";
+};
+
+fetch("/api/health").then(r=>r.json()).then(h=>{
+  const b=document.getElementById("modeBadge");
+  if(h.mode==="real"){b.textContent="● live model";b.classList.add("real");}
+  else{b.textContent="● demo mode";}
+}).catch(()=>{});
+
+/* if a job is already running (page reloaded), jump straight to dashboard */
+fetch("/api/train/status").then(r=>r.json()).then(s=>{
+  if(["preparing","training","evaluating"].includes(s.state)){
+    document.getElementById("setup").style.display="none";
+    document.getElementById("dash").classList.add("show");
+    startPolling();
+  }
+}).catch(()=>{});
+
+document.getElementById("startBtn").onclick = async () => {
+  const epochs = parseInt(document.getElementById("epochs").value) || 20;
+  const fd = new FormData();
+  fd.append("epochs", epochs);
+  if (mode === "folder") {
+    const p = document.getElementById("folderPath").value.trim();
+    if (!p) { alert("Please paste your dataset folder path first."); return; }
+    fd.append("folder_path", p);
+  } else {
+    const f = document.getElementById("zipFile").files[0];
+    if (!f) { alert("Please choose a .zip file of your dataset first."); return; }
+    fd.append("dataset_zip", f);
+  }
+  const btn = document.getElementById("startBtn");
+  btn.disabled = true; btn.textContent = "Starting…";
+  try {
+    const r = await fetch("/api/train/start", { method: "POST", body: fd });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || "Could not start training");
+    document.getElementById("setup").style.display = "none";
+    document.getElementById("dash").classList.add("show");
+    lastLogCount = 0;
+    startPolling();
+  } catch (e) { alert("Couldn't start training: " + e.message); }
+  finally { btn.disabled = false; btn.textContent = "🚀 Start training"; }
+};
+
+function fmtSec(s){
+  if (s == null) return "—";
+  s = Math.round(s);
+  if (s < 60) return s + "s";
+  const m = Math.floor(s/60), h = Math.floor(m/60);
+  return h ? `${h}h ${m%60}m` : `${m}m ${s%60}s`;
+}
+
+function startPolling(){
+  if (pollTimer) return;
+  const tick = async () => {
+    try {
+      const s = await (await fetch("/api/train/status")).json();
+      render(s);
+      if (["done","error","idle"].includes(s.state)) { clearInterval(pollTimer); pollTimer = null; }
+    } catch(e){}
+  };
+  tick();
+  pollTimer = setInterval(tick, 2000);
+}
+
+function render(s){
+  const pill = document.getElementById("statePill");
+  pill.textContent = s.state.toUpperCase().replace("_"," ");
+  pill.className = "state-pill" + (["training","preparing","evaluating"].includes(s.state) ? " running" : s.state === "done" ? " done" : s.state === "error" ? " error" : "");
+  document.getElementById("jobLine").textContent = s.job_id ? ("Job " + s.job_id) : "";
+
+  const pct = s.epochs_total ? Math.round(100 * s.epoch / s.epochs_total) : 0;
+  document.getElementById("epochLabel").textContent = `Epoch ${s.epoch} / ${s.epochs_total}`;
+  document.getElementById("pctLabel").textContent = pct + "%";
+  document.getElementById("progBar").style.width = pct + "%";
+
+  document.getElementById("sElapsed").textContent = fmtSec(s.elapsed_sec);
+  const avg = s.epoch_times && s.epoch_times.length ? s.epoch_times.reduce((a,b)=>a+b,0)/s.epoch_times.length : null;
+  document.getElementById("sEpochTime").textContent = fmtSec(avg);
+  document.getElementById("sEta").textContent = s.state === "done" ? fmtSec(s.total_sec) : fmtSec(s.eta_sec);
+  document.getElementById("sTrainAcc").textContent = s.train_acc != null ? (s.train_acc*100).toFixed(1)+"%" : "—";
+  document.getElementById("sValAcc").textContent = s.val_acc != null ? (s.val_acc*100).toFixed(1)+"%" : "—";
+  document.getElementById("sImages").textContent = s.images_found || "—";
+
+  const con = document.getElementById("console");
+  if (s.log && s.log.length !== lastLogCount) {
+    con.innerHTML = s.log.map(l => l.startsWith("[") ? l : `<span class="err">${l}</span>`).join("<br>");
+    /* highlight error lines */
+    con.innerHTML = s.log.map(l => l.includes("ERROR") ? `<span class="err">${l}</span>` : l).join("<br>");
+    con.scrollTop = con.scrollHeight;
+    lastLogCount = s.log.length;
+  }
+
+  if (s.state === "done") {
+    document.getElementById("doneBanner").classList.add("show");
+    document.getElementById("doneText").innerHTML =
+      `Trained on <b>${s.images_found}</b> real images in <b>${fmtSec(s.total_sec)}</b> ` +
+      `(${s.epoch} epochs). Test accuracy: <b>${s.test_acc != null ? (s.test_acc*100).toFixed(2)+"%" : "n/a"}</b>. ` +
+      `The scanner now uses this model for every prediction.`;
+    const b = document.getElementById("modeBadge");
+    b.textContent = "● live model"; b.classList.add("real");
+  }
+  if (s.state === "error") {
+    document.getElementById("errBanner").classList.add("show");
+    document.getElementById("errText").textContent = s.error || "Unknown error.";
+  }
+}
+</script>
+</body>
+</html>

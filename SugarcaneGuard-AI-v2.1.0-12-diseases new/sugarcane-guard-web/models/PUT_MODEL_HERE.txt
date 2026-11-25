@@ -1,0 +1,11 @@
+To enable REAL predictions:
+1. Run all cells of SugarcaneGuard_AI_Jupyter_Updated_Path.ipynb
+   (through cell 11, "Save final model and class-name mapping").
+2. Copy these files from the notebook's "models" folder into THIS folder:
+     - sugarcane_model.keras      (final model)
+       ...or best_sugarcane_model.keras (best checkpoint - also accepted)
+     - class_names.json
+3. pip install tensorflow, then restart the server (python app.py).
+
+The header badge switches to "live model" automatically.
+Until then, the API runs in clearly-labelled DEMO mode.

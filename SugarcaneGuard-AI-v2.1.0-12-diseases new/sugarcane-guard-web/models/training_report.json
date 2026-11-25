@@ -1,0 +1,13 @@
+{
+  "job_id": "train-1795586002",
+  "dataset": "D:\\OneDrive\\Desktop\\SugarcaneGuard-AI-v2.1.0-12-diseases new\\sugarcane-guard-web\\data\\uploads\\dataset-train-1795586002\\sugarcane leaf decise detection final for r2\\archive",
+  "images": 4463,
+  "epochs_requested": 10,
+  "epochs_run": 10,
+  "started_at": "2026-11-25T11:23:22.583316",
+  "finished_at": "2026-11-25T11:36:26.280184",
+  "total_seconds": 783.7,
+  "avg_epoch_seconds": 69.8,
+  "test_loss": 0.3877,
+  "test_accuracy": 0.8552
+}
